@@ -1,0 +1,19 @@
+% in 1st position or preceded by a blank are comments
+
+% @xxx is a macro, wherever it appears a pure text substitution appears
+def @home=d:\\GoogleDrive\\Dev\\jacobin
+def @exec=@home\\src\\jacobin.exe
+
+.setup %sections of the template are indicated with a dotted name. setup is performed just once
+	require file @exec
+
+.test
+	capture stdout
+	capture stderr
+	run @exec @home\\testdata\\Hello.class
+
+	stderr.mustBeEmtpy	% stream verbs: mustBeEmpty, mustContain, mustStartWith, mustEndwith
+	stdout.mustStartWith "Jacobin VM v."
+	stdout.mustContain "Hello from Hello.main!"
+
+.teardown
